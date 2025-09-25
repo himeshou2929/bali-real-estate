@@ -1,61 +1,66 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+プロジェクト概要
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+「バリ不動産仲介サイト」は、Laravel + Vue (Inertia.js) を用いて構築した不動産仲介プラットフォームのサンプル実装です。
+ユーザーが物件を検索・閲覧し、問い合わせやお気に入り登録を行える機能を備えています。
+不動産業界で実際に使われるような機能を想定しながら、設計から実装までを一貫して行いました。
 
-## About Laravel
+主な機能
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+物件管理
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+CRUD機能（物件の追加・編集・削除）
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+複数画像のアップロード
 
-## Learning Laravel
+検索・絞り込み
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+クエリビルダでエリア・価格帯など条件検索
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+ユーザー機能
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+会員登録・ログイン
 
-## Laravel Sponsors
+お気に入り（ハート）機能
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+問い合わせフォーム
 
-### Premium Partners
+エージェント機能
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+ダッシュボード（担当物件管理）
 
-## Contributing
+問い合わせ対応
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+管理者機能
 
-## Code of Conduct
+ユーザー管理
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+物件・カテゴリ管理
 
-## Security Vulnerabilities
+技術スタック
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Backend: Laravel 10 / PHP 8.2
 
-## License
+Frontend: Vue 3 + Inertia.js + Tailwind CSS + Vite
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Database: MySQL
+
+Infra: AWS EC2 (Ubuntu, Nginx, PHP-FPM), S3（画像アップロード想定）
+
+その他: GitHub Actions（デプロイ自動化を想定）
+
+学んだこと / 工夫点
+
+Laravel の Eloquent リレーション（1対多、多対多）を活用した設計
+例：ユーザー⇔物件（1対多）、物件⇔画像（1対多）、物件⇔カテゴリ（多対多）
+
+クエリビルダによる柔軟な検索機能（価格帯・エリアでの絞り込み）
+
+問い合わせ機能を Request クラスでバリデーション
+
+お気に入り機能を Pivot テーブルで実装
+
+Inertia.js により Laravel と Vue を自然に接続し、SPA 風の操作感を実現
+
+AWS EC2 上にデプロイし、Nginx + PHP-FPM + MySQL の構成で稼働させた経験
+
+SSL 証明書の設定や基本的なサーバー構成を実践で理解
