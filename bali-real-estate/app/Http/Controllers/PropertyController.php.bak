@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Area;
+use App\Models\Property;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class PropertyController extends Controller
+{
+    public function index(Request $request)
+    {
+        // sanitize filters
+        $request->merge(array_filter([
+            "area" => max(0, (int) $request->query("area", 0)),
+            "min_price" => max(0, (int) $request->query("min_price", 0)),
+            "max_price" => max(0, (int) $request->query("max_price", 0)),
+            "bedrooms" => max(0, (int) $request->query("bedrooms", 0)),
+            "bathrooms" => max(0, (int) $request->query("bathrooms", 0)),
+            "sort" => (string) $request->query("sort", "latest"),
+        ], fn($v)=>$v!==0 && $v!=="" && $v!==null));
+
+        $query = Property::with(['area','images'])->where('is_published', true);
+
+        if ($request->filled('area')) {
+            $query->where('area_id', $request->area);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price_usd', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price_usd', '<=', $request->max_price);
+        }
+
+        if ($request->filled('bedrooms')) {
+            $query->where('bedrooms', '>=', $request->bedrooms);
+        }
+
+        // Apply sorting
+        $sort = $request->get('sort', 'latest');
+        switch ($sort) {
+            case 'price_low':
+                $query->orderBy('price_usd', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price_usd', 'desc');
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $properties = $query->paginate(12)->withQueryString();
+        $areas = Area::all();
+
+        return Inertia::render('Properties/Index', [
+            'properties' => $properties,
+            'filters' => [
+                'areas' => $areas,
+                'bedrooms' => [1,2,3,4,5],
+            ],
+            'query' => $request->only(['area','min_price','max_price','bedrooms','sort']),
+        ]);
+    }
+
+    public function show(Property $property)
+    {
+        $property->load(['area','images' => fn($q) => $q->orderBy('sort_order')]);
+        return Inertia::render('Properties/Show', ['property' => $property]);
+    }
+}
